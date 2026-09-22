@@ -20,3 +20,5 @@ sudo nano /etc/default/keyboard
 # cambiar "us" -> "es" 
 ```
 
+# Entregar los hitos
+hito_L0501.txt (no vale .sh)

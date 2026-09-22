@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Notas laboratorio CIMSI.md",
+                "file": "Ejercicios Laboratorio 1.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Notas laboratorio CIMSI"
+              "title": "Ejercicios Laboratorio 1"
             }
           },
           {
@@ -35,8 +35,7 @@
               "title": "Ejercicios Laboratorio 1"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -203,11 +202,11 @@
       "bases:Crear nueva base": false
     }
   },
-  "active": "1f9d607ba06cb467",
+  "active": "7453be5bc284b136",
   "lastOpenFiles": [
-    "README.md",
-    "Ejercicios Laboratorio 1.md",
     "Notas laboratorio CIMSI.md",
+    "Ejercicios Laboratorio 1.md",
+    "README.md",
     "Comandos útiles.md"
   ]
 }
