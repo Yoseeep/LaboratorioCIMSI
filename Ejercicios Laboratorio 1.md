@@ -120,14 +120,14 @@ if [ $# -ne 2 ]; then
 fi
 
 # Elimina el punto de la extensión si se proporciona
-extension_original=${1#.}
+extension_original=${1#.} # basename -s "." "$1"
 extension_nueva=${2#.}
 
 for archivo in *.$extension_original; do # recorre todos los archivos del directorio actual con la extensión original
 	if [ -f "$archivo" ]; then # si es tipo archivo
 		echo "Renombrando $archivo a ${archivo%.$extension_original}.$extension_nueva"
 		mv -n "$archivo" "${archivo%.$extension_original}.$extension_nueva"
-	fi
+	fi # basename  "$archivo" ".$extension_original"
 done
 ```
 - **mv -n** para que en el que exista un archivo igual al renombrado aborte el  renombrado para no sobreescribirlo.

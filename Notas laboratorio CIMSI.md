@@ -22,3 +22,16 @@ sudo nano /etc/default/keyboard
 
 # Entregar los hitos
 hito_L0501.txt (no vale .sh)
+
+
+- aprender basename
+
+---
+Estructura para el Laboratorio 2:
+- P2
+	- entorno
+		- Vagrantfile (craedo con Vagrant init Nombre_Box)
+		- carpeta_compartida
+
+Cuando se haga vagrant up:
+![[Estructura_P2.png]]

@@ -8,34 +8,35 @@
         "type": "tabs",
         "children": [
           {
-            "id": "7453be5bc284b136",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Ejercicios Laboratorio 1.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Ejercicios Laboratorio 1"
-            }
-          },
-          {
             "id": "1f9d607ba06cb467",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Ejercicios Laboratorio 1.md",
+                "file": "Notas laboratorio CIMSI.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Ejercicios Laboratorio 1"
+              "title": "Notas laboratorio CIMSI"
+            }
+          },
+          {
+            "id": "92dda1e785006f6c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Ejercicios_Laboratorio 2.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Ejercicios_Laboratorio 2"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -202,10 +203,13 @@
       "bases:Crear nueva base": false
     }
   },
-  "active": "7453be5bc284b136",
+  "active": "92dda1e785006f6c",
   "lastOpenFiles": [
     "Notas laboratorio CIMSI.md",
+    "Ejercicios_Laboratorio 2.md",
     "Ejercicios Laboratorio 1.md",
+    "fotos/Estructura_P2.png",
+    "fotos",
     "README.md",
     "Comandos útiles.md"
   ]
