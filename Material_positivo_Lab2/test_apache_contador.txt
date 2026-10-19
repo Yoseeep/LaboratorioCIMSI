@@ -1,0 +1,19 @@
+#!/bin/bash
+
+ARCHIVO="./informe_rendimiento.txt" 
+IP_OBJETIVO="192.168.56.20" 
+
+echo " ANÁLISIS DE RENDIMIENTO - APACHE BENCH" > "${ARCHIVO}"
+echo "=============================================" >> "${ARCHIVO}" 
+echo "Fecha de ejecución: $(date)" >> "${ARCHIVO}" 
+echo "Servidor objetivo: http://${IP_OBJETIVO}/" >> "${ARCHIVO}"
+echo "" >> "${ARCHIVO}"
+ 
+for c in 1 2 4 8 16; do 
+        echo "" >> "${ARCHIVO}"
+        echo ">>> Prueba: n=1000, c=${c}" >> "${ARCHIVO}" 
+        echo "-------------------------------------" >> "${ARCHIVO}"
+        ab -n 1000 -c ${c} http://${IP_OBJETIVO}/contador.php >> "${ARCHIVO}" 2>&1 
+        echo "" >> "${ARCHIVO}"
+        sleep 10
+done

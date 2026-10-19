@@ -234,26 +234,7 @@ Vagrant.configure("2") do |config|
     
     db.vm.provision "shell", inline: <<-SHELL
       apt-get update
-      apt-get install -y mariadb-server
-
-      # Apertura del socket para permitir peticiones del nodo-web
-      sed -i 's/bind-address.*/bind-address = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
-      systemctl restart mariadb
-
-      mysql -e "DROP DATABASE IF EXISTS prueba_db;"
-      mysql -e "CREATE DATABASE prueba_db;"
-      mysql -e "CREATE TABLE prueba_db.users (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(255));"
-      mysql -e "INSERT INTO prueba_db.users (nombre) VALUES ('Admin'), ('Ubuntu'), ('Cimsi');"
-      
-      # Creación del usuario remoto (contraseña unificada)
-      mysql -e "CREATE USER 'webuser'@'192.168.56.20' IDENTIFIED BY 'password_webuser';"
-      mysql -e "GRANT ALL PRIVILEGES ON prueba_db.* TO 'webuser'@'192.168.56.20';"
-      mysql -e "FLUSH PRIVILEGES;"
-
-      FECHA=$(date +%Y%m%d_%H%M%S)
-	  ARCHIVO="/backup_db/dump_prueba_${FECHA}.sql"
-	  mysqldump prueba_db > ${ARCHIVO}
-	  
+      apt-get install -y mariadb-server	  
     SHELL
   end
 
@@ -270,48 +251,79 @@ Vagrant.configure("2") do |config|
       apt-get update
       # apache2-utils es obligatorio para el binario 'ab'
       apt-get install -y apache2 mariadb-client apache2-utils curl
-      
-      # 1. Prueba de conectividad cliente-servidor DB
-      mysql -h 192.168.56.30 -u webuser -ppassword_webuser -e "SELECT * FROM prueba_db.users;" > /var/www/html/db_test.txt
 
       # 2. Control de flujo: Esperar a que el daemon HTTP responda en la IP asignada
       until curl -s http://192.168.56.20/ > /dev/null; do
         sleep 1
       done
 
-      # 3. Creación del script de análisis de rendimiento
-      cat << 'EOF' > /usr/local/bin/run_benchmark.sh
-#!/bin/bash
-ARCHIVO="/resultados/informe_rendimiento.txt"
-IP_OBJETIVO="192.168.56.20"
+	# 3. Ejecución directa del test de rendimiento en línea 
+		  ARCHIVO="/resultados/informe_rendimiento.txt" 
+		  IP_OBJETIVO="192.168.56.20" 
+		  echo " ANÁLISIS DE RENDIMIENTO - APACHE BENCH" >> "${ARCHIVO}"
+		  echo "=============================================" >> "${ARCHIVO}" 
+		  echo "Fecha de ejecución: $(date)" >> "${ARCHIVO}" 
+		  echo "Servidor objetivo: http://${IP_OBJETIVO}/" >> "${ARCHIVO}"
+		  echo "" >> "${ARCHIVO}" 
+		  for c in 1 2 4 8 16; do 
+			  echo "-------------------------------------" >> "${ARCHIVO}"
+			  echo ">>> Prueba: n=1000, c=${c}" >> "${ARCHIVO}" 
+			  echo "-------------------------------------" >> "${ARCHIVO}"
+			  ab -n 1000 -c ${c} http://${IP_OBJETIVO}/ >> "${ARCHIVO}" 2>&1 
+			  echo "" >> "${ARCHIVO}"
+			  sleep 2
+		  done
 
-echo "   ANÁLISIS DE RENDIMIENTO - APACHE BENCH" >> "${ARCHIVO}"
-echo "=============================================" >> "${ARCHIVO}"
-echo "Fecha de ejecución: $(date)" >> "${ARCHIVO}"
-echo "Servidor objetivo: http://${IP_OBJETIVO}/" >> "${ARCHIVO}"
-echo -e "\n" >> "${ARCHIVO}"
-
-# Iteración sobre los niveles de concurrencia exigidos
-for c in 1 2 4 8 16; do
-    echo ">>> Prueba: n=1000, c=${c}" >> "${ARCHIVO}"
-    echo "--------------------------------------------------------" >> "${ARCHIVO}"
-    
-    ab -n 1000 -c ${c} http://${IP_OBJETIVO}/ >> "${ARCHIVO}" 2>&1
-    
-    echo -e "\n" >> "${ARCHIVO}"
-    # Pausa técnica para evitar la saturación de puertos efímeros en TIME_WAIT
-    sleep 2
-done
-EOF
-
-      # 4. Ejecución del test de estrés
-      chmod +x /usr/local/bin/run_benchmark.sh
-      /usr/local/bin/run_benchmark.sh
     SHELL
   end
 end
 ```
+En el entorno del Vagrantfile, creamos una carpeta llamada "rendimiento". Aquí guardamos "contador.php". 
+
+Desde nodo-web, agreguemos la web "contador.php" a apache: 
+```bash
+vagrant ssh nodo-web
+
+sudo cp /vagrant/rendimiento/contador.php /var/www/html/contador.php 
+# Porque /var/www/html/ pertenece al administrador del sistema root, por lo que el usuario actual vagrant carece de permisos de escritura sobre él
+
+sudo apt-get update
+sudo apt-get install -y php libapache2-mod-php
+sudo systemctl restart apache2
+# Para que Apache pueda interpretar y ejecutar el archivo contador.php
+```
+
+Desde nodo-db, ejecutemos el test de rendimiento:
+```bash
+vagrant ssh nodo-db
+
+cd /vagrant/rendimiento/
+
+# ./test_apache.sh 
+./test_apache_contador.sh 
+```
 
 
 # Ejercicio 7
+Creamos una snapshot:
+```bash
+vagrant snapshot save estado_inicial
+```
 
+Rompemos el nodo-web:
+```bash
+vagrant ssh nodo-web
+
+sudo rm -rf /etc/apache2
+
+sudo systemctl stop apache2
+
+systemclt status apache2
+
+exit
+```
+
+Restauramos la snapshot:
+```bash
+vagrant snapshot restore estado_inicial
+```

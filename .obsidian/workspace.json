@@ -98,7 +98,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 259.98046875
   },
   "right": {
     "id": "da6e27f1a94f23b9",
@@ -203,13 +203,24 @@
       "bases:Crear nueva base": false
     }
   },
-  "active": "92dda1e785006f6c",
+  "active": "d987148ac86db8d3",
   "lastOpenFiles": [
+    "Material_positivo_Lab2/Scalability - alumnos PRACTICA.xlsx",
+    "Material_positivo_Lab2/Scalability - alumnos (Copiar).xlsx",
     "Notas laboratorio CIMSI.md",
     "Ejercicios_Laboratorio 2.md",
+    "Material_positivo_Lab2/resultados_reales_obtenidos.xlsx",
+    "Material_positivo_Lab2/datos_obtenidos_reales",
+    "Material_positivo_Lab2/Scalability - alumnos.xlsx",
+    "Material_positivo_Lab2/test_apache_contador.txt",
+    "Material_positivo_Lab2/test_apache (Copiar).txt",
+    "Material_positivo_Lab2/informe_rendimiento.txt",
+    "Material_positivo_Lab2/test_apache.txt",
+    "Material_positivo_Lab2/test_apache.sh",
+    "Material_positivo_Lab2/Sin título.md",
+    "Material_positivo_Lab2",
     "Ejercicios Laboratorio 1.md",
     "fotos/Estructura_P2.png",
-    "fotos",
     "README.md",
     "Comandos útiles.md"
   ]
